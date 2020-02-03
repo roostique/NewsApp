@@ -24,7 +24,7 @@ extension UIImageView {
                 
             }
         }
-        task.resume() 
+        task.resume()
     }
     
 }

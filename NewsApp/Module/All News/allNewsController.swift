@@ -12,6 +12,7 @@ class AllNewsController: UIViewController {
     
     let cellTwo = "secondCellId"
     var articles: [Article]? = []
+    let activityIndicator = ActivityIndicator(frame: .zero)
     
     var refresher: UIRefreshControl = {
         let rf = UIRefreshControl()
@@ -19,7 +20,7 @@ class AllNewsController: UIViewController {
         return rf
     }()
     
-    private lazy var newsList: UITableView = {
+    private lazy var newsTableView: UITableView = {
         let tv = UITableView()
         tv.delegate = self
         tv.dataSource = self
@@ -32,6 +33,7 @@ class AllNewsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         fetchArticles()
         setupViews()
     }
@@ -41,15 +43,18 @@ class AllNewsController: UIViewController {
         navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
-        view.addSubview(newsList)
-        newsList.addSubview(refresher)
         
-        newsList.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        [newsTableView, activityIndicator].forEach { view.addSubview ($0) }
+        newsTableView.addSubview(refresher)
+        
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        newsTableView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
     
     @objc func fetchArticles() {
-        let urlRequest = URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=apple&pageSize=15&from=2020-01-30&to=2020-01-30&sortBy=popularity&apiKey=e65ee0938a2a43ebb15923b48faed18d")!)
+        let urlRequest = URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=trump&sources=cnn,axios,bbc-news,fox-news,the-hill,google-news-ca,google-news-uk&apiKey=e65ee0938a2a43ebb15923b48faed18d")!) //change if app crashes
         let task = URLSession.shared.dataTask(with: urlRequest) { (data,response,error) in
             
             if error != nil {
@@ -82,15 +87,12 @@ class AllNewsController: UIViewController {
                             
                         }
                         self.articles?.append(article)
-                        print(article.headline)
-                        print(article.date)
-                        
-                        
                     }
                     
                 }
                 DispatchQueue.main.async {
-                    self.newsList.reloadData()
+                    self.newsTableView.reloadData()
+                    self.activityIndicator.stopAnimating()
                     
                 }
                 
@@ -101,7 +103,7 @@ class AllNewsController: UIViewController {
         }
         task.resume()
         refresher.endRefreshing()
-
+        
     }
     
 }

@@ -11,10 +11,9 @@ import UIKit
 class Article: NSObject {
     
     var headline: String?
-    var source: String?
     var date: String?
     var imageUrl: String?
     var desc: String?
     var url: String?
-
+    
 }

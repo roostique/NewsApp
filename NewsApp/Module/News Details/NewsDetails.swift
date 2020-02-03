@@ -11,14 +11,11 @@ import WebKit
 
 class NewsDetails: UIViewController {
     
-    var url: String?
-    
-    lazy var activityIndicator = ActivityIndicator(frame: .zero)
+    var url: String?    
     lazy var webView = WKWebView()
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicator.stopAnimating()
         webView.load(URLRequest(url: URL(string: url!)!))
         setupViews()
 
@@ -26,11 +23,8 @@ class NewsDetails: UIViewController {
 
     func setupViews() {
         view.backgroundColor = .white
-        view.addSubview(activityIndicator)
         view.addSubview(webView)
 
-        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         webView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     

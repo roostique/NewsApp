@@ -1,5 +1,5 @@
 //
-//  TopNewsCell.swift
+//  AllNewsCell.swift
 //  NewsApp
 //
 //  Created by Rustem Supayev on 29/01/2020.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class TopNewsCell: UITableViewCell {
+class AllNewsCell: UITableViewCell {
     
-    lazy var container: UIView = {
+    private lazy var container: UIView = {
         let view = UIView()
         return view
     }()
@@ -20,6 +20,7 @@ class TopNewsCell: UITableViewCell {
         lbl.text = "Test"
         lbl.textColor = .black
         lbl.numberOfLines = 0
+        lbl.clipsToBounds = true
         lbl.font = UIFont(name:"TimesNewRomanPS-BoldMT", size: 24.0)
         return lbl
     }()
@@ -34,7 +35,6 @@ class TopNewsCell: UITableViewCell {
     
     lazy var imageBox: UIImageView = {
         let img = UIImageView()
-        img.image = nil
         img.contentMode = .scaleAspectFit
         img.clipsToBounds = true
         img.layer.cornerRadius = 10
@@ -68,7 +68,7 @@ class TopNewsCell: UITableViewCell {
         
         [headline, date, imageBox, articleText].forEach { container.addSubview ($0) }
         
-        headline.anchor(top: container.topAnchor, leading: container.leadingAnchor, bottom: date.topAnchor, trailing: container.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+        headline.anchor(top: container.topAnchor, leading: container.leadingAnchor, bottom: nil, trailing: container.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
         date.anchor(top: headline.bottomAnchor, leading: nil, bottom: nil, trailing: headline.trailingAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
         imageBox.anchor(top: date.bottomAnchor, leading: headline.leadingAnchor, bottom: nil, trailing: headline.trailingAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 200)
         articleText.anchor(top: imageBox.bottomAnchor, leading: imageBox.leadingAnchor, bottom: container.bottomAnchor, trailing: imageBox.trailingAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: 0, height: 0)
